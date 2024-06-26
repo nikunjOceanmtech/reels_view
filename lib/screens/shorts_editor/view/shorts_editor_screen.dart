@@ -49,7 +49,6 @@ class _ShortsEditorScreenState extends State<ShortsEditorScreen> {
                   onEffectTap: () => shortsEditorCubit.showFilterView(state: state, isFilterShow: true),
                   onFilterCancelTap: () => shortsEditorCubit.showFilterView(state: state, isFilterShow: false),
                   onFilterDoneTap: () async {
-                    print("=========");
                     shortsEditorCubit.loadFilter(state: state);
                   },
                   onMusicTap: () {},

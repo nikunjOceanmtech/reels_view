@@ -18,6 +18,8 @@ class ShortsEditorCubit extends Cubit<ShortsEditorState> {
   String videoPath = "";
 
   Future<void> loadVideo({required String filePath}) async {
+    videoPlayerController?.dispose();
+    videoPlayerController = null;
     videoPath = filePath;
     videoPlayerController = VideoPlayerController.file(File(filePath));
     await videoPlayerController?.initialize().then(
@@ -72,7 +74,7 @@ class ShortsEditorCubit extends Cubit<ShortsEditorState> {
       print("==========Success -> ${DateTime.now()}");
       videoPath = outputVideoPath;
       session.cancel();
-      emit(state.copyWith(isLoadingVideo: false));
+      await loadVideo(filePath: outputVideoPath);
     } else {
       for (var log in await session.getAllLogs()) {
         print("========${log.getMessage()}");

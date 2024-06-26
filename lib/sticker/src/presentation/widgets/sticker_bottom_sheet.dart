@@ -141,7 +141,7 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   imageBuilder(
-                    imageUrl: "assets/svgs/common/gallery.svg",
+                    imageUrl: "assets/shorts/gallery.svg",
                     color: primary1Color,
                   ),
                   SizedBox(width: 10),
@@ -165,23 +165,11 @@ class _BottomSheetViewState extends State<BottomSheetView> {
               return InkWell(
                 onTap: () {
                   Navigator.pop(context);
-                  // widget.editableItem.draggableWidget.add(EditableItem()
-                  //   ..type = ItemType.gif
-                  //   ..child = 1 == 1
-                  //       ? Text(systemEmojis[index])
-                  //       : Image(
-                  //           image: AssetImage(
-                  //             systemEmojis[index],
-                  //           ),
-                  //         )
-                  //   ..position = const Offset(0.0, 0.0));
                   widget.editableItem.draggableWidget.add(
                     EditableItem()
                       ..type = ItemType.text
                       ..text = systemEmojis[index]
                       ..backGroundColor = widget.editingProvider.backGroundColor
-                      // ..textColor = controlNotifier.colorList![editorNotifier.textColor]
-                      // ..fontFamily = editorNotifier.fontFamilyIndex
                       ..fontSize = 1 == 1 ? 70 : widget.editingProvider.textSize
                       ..fontAnimationIndex = widget.editingProvider.fontAnimationIndex
                       ..textAlign = widget.editingProvider.textAlign
@@ -195,11 +183,9 @@ class _BottomSheetViewState extends State<BottomSheetView> {
                 child: Padding(
                   padding: EdgeInsets.all(10.r),
                   child: Text(
-                    // image: AssetImage(
                     textAlign: TextAlign.center,
                     systemEmojis[index],
                     style: TextStyle(fontSize: 50.sp),
-                    // ),
                   ),
                 ),
               );
