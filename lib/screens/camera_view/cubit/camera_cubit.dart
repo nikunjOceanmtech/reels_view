@@ -20,7 +20,7 @@ class CameraCubit extends Cubit<CameraState> {
     cameraController = null;
 
     List<CameraDescription> cameras = await availableCameras();
-    cameraController = CameraController(cameras.first, ResolutionPreset.max);
+    cameraController = CameraController(cameras.first, ResolutionPreset.high);
     await cameraController?.initialize();
     emit(CameraLoadedState(isVideoRecoding: false));
   }

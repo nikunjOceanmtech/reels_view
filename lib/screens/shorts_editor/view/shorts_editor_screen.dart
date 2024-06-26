@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reels_view/di/get_it.dart';
+import 'package:reels_view/global.dart';
 import 'package:reels_view/screens/shorts_editor/cubit/shorts_editor_cubit.dart';
 import 'package:reels_view/screens/shorts_editor/cubit/shorts_editor_state.dart';
 import 'package:reels_view/screens/shorts_editor/view/filter_sector.dart';
