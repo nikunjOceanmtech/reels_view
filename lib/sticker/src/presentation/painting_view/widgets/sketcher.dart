@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:perfect_freehand/perfect_freehand.dart';
 import 'package:reels_view/sticker/src/domain/models/painting_model.dart';

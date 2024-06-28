@@ -1,4 +1,3 @@
-// ignore_for_file: must_be_immutable, constant_identifier_names
 library stories_editor;
 
 import 'dart:io';

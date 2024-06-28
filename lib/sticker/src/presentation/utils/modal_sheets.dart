@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reels_view/sticker/src/presentation/widgets/sticker_bottom_sheet.dart';

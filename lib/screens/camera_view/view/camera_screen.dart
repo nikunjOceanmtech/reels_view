@@ -31,7 +31,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<CameraCubit, CameraState>(
       bloc: cameraCubit,
-      builder: (context, state) {
+      builder: (_, state) {
         if (state is CameraLoadedState) {
           return Scaffold(
             body: (cameraCubit.cameraController != null && (cameraCubit.cameraController?.value.isInitialized ?? false))

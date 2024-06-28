@@ -1,5 +1,3 @@
-// ignore_for_file: unrelated_type_equality_checks
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reels_view/sticker/src/domain/providers/notifiers/control_provider.dart';

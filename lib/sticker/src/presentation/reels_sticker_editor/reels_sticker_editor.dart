@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable, deprecated_member_use, unused_local_variable
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
