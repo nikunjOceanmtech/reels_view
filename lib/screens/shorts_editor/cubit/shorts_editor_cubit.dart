@@ -59,6 +59,8 @@ class ShortsEditorCubit extends Cubit<ShortsEditorState> {
       "libx264",
       '-preset',
       'superfast',
+      "-threads",
+      "3",
       // "-crf",
       // "23",
       // "-r",
@@ -84,13 +86,50 @@ class ShortsEditorCubit extends Cubit<ShortsEditorState> {
     }
   }
 
+  Future<void> loadMusic({required ShortsEditorLoadedState state}) async {
+    print("==========Start -> ${DateTime.now()}");
+    emit(state.copyWith(isLoadingVideo: true));
+    String songPath = '/data/data/com.example.reels_view/cache/shortsVideo/music.mp3';
+    String outputVideoPath = await setFileInDevice('music_${DateTime.now().microsecondsSinceEpoch}.mp4');
+
+    List<String> args = [
+      "-y",
+      "-i",
+      videoPath,
+      "-i",
+      songPath,
+      "-c:v",
+      "copy",
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-shortest",
+      outputVideoPath,
+    ];
+
+    FFmpegSession session = await FFmpegKit.executeWithArguments(args);
+
+    if ((await session.getReturnCode())?.getValue() == ReturnCode.success) {
+      print("==========Success -> ${DateTime.now()}");
+      videoPath = outputVideoPath;
+      session.cancel();
+      await loadVideo(filePath: outputVideoPath);
+    } else {
+      for (var log in await session.getAllLogs()) {
+        print("========${log.getMessage()}");
+      }
+      emit(state.copyWith(isLoadingVideo: false));
+      session.cancel();
+    }
+  }
+
   Future<String> getFilterImage({required ShortsEditorLoadedState state}) async {
     ByteData assetData = await rootBundle.load(state.filterPath);
-    String tempDir = (await getTemporaryDirectory()).path;
-    String assetFileName = state.filterPath.split('/').last;
-    File imageFile = File('$tempDir/shortsVideo/$assetFileName');
-    await imageFile.writeAsBytes(assetData.buffer.asUint8List());
-    return imageFile.path;
+    String imageFile = await setFileInDevice(state.filterPath.split('/').last);
+    File file = File(imageFile);
+    await file.writeAsBytes(assetData.buffer.asUint8List());
+    return file.path;
   }
 
   Future<String> setFileInDevice(String fileName) async {

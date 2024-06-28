@@ -20,9 +20,13 @@ class CameraCubit extends Cubit<CameraState> {
     cameraController = null;
 
     List<CameraDescription> cameras = await availableCameras();
-    cameraController = CameraController(cameras.first, ResolutionPreset.high);
-    await cameraController?.initialize();
-    emit(CameraLoadedState(isVideoRecoding: false));
+    List<CameraDescription> calerasList =
+        cameras.where((element) => element.lensDirection == CameraLensDirection.back).toList();
+    if (calerasList.isNotEmpty) {
+      cameraController = CameraController(calerasList.first, ResolutionPreset.veryHigh);
+      await cameraController?.initialize();
+      emit(CameraLoadedState(isVideoRecoding: false));
+    }
   }
 
   Future<void> disposeCamera() async {

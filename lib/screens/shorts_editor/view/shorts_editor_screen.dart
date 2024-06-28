@@ -51,7 +51,9 @@ class _ShortsEditorScreenState extends State<ShortsEditorScreen> {
                   onFilterDoneTap: () async {
                     shortsEditorCubit.loadFilter(state: state);
                   },
-                  onMusicTap: () {},
+                  onMusicTap: () {
+                    shortsEditorCubit.loadMusic(state: state);
+                  },
                   onVidepPlayOrPause: () {},
                   onNextButtonTap: (imagePath) {},
                   playPauseView: const SizedBox.shrink(),
@@ -63,9 +65,6 @@ class _ShortsEditorScreenState extends State<ShortsEditorScreen> {
                           ],
                         )
                       : const SizedBox.shrink(),
-                  middleBottomWidget: Container(
-                    height: 50,
-                  ),
                 ),
                 Positioned(bottom: 90.h, child: filterList(state: state)),
               ],
