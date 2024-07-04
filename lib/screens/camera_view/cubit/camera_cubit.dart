@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
@@ -40,6 +39,7 @@ class CameraCubit extends Cubit<CameraState> {
   }
 
   Future<void> startVideoRecode({required CameraLoadedState state}) async {
+    videoFile = null;
     try {
       await cameraController?.startVideoRecording();
       emit(state.copyWith(isVideoRecoding: true, random: Random().nextDouble()));
@@ -59,28 +59,33 @@ class CameraCubit extends Cubit<CameraState> {
     }
   }
 
-  Future<void> nextButton({required BuildContext context}) async {
-    print("=========+${await getFileSize(videoFile?.path ?? "", 2)}");
-    double size = await getFileSize(videoFile?.path ?? "", 2);
-    // if (size < 5) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => ShortsEditorScreen(videoPath: videoFile?.path ?? "")),
-    //   );
-    //   return;
-    // }
+  Future<void> nextButton({required BuildContext context, required CameraLoadedState state}) async {
+    double size = await getFileSize(filepath: videoFile?.path ?? "");
+    print("==============$size");
+    if (size < 5) {
+      bool isBack = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ShortsEditorScreen(videoPath: videoFile?.path ?? "")),
+      );
+      videoFile = null;
+      emit(state.copyWith(random: Random().nextDouble()));
+      return;
+    }
     print("==========Start -> ${DateTime.now()}");
     String outputVideoPath = await setFileInDevice('video_size_compress_${DateTime.now().microsecondsSinceEpoch}.mp4');
-    String command = "-i ${videoFile?.path} -vcodec libx264 -preset ultrafast -crf 23 $outputVideoPath";
+    String command =
+        "-i ${videoFile?.path} -vcodec libx264 -preset veryfast -crf 25 -r 30 -threads auto $outputVideoPath";
     FFmpegSession session = await FFmpegKit.execute(command);
     if ((await session.getReturnCode())?.getValue() == ReturnCode.success) {
       print("==========Success -> ${DateTime.now()}");
+      print("=========+${await getFileSize(filepath: outputVideoPath)}");
       session.cancel();
-      print("=========+${await getFileSize(outputVideoPath, 2)}");
-      Navigator.push(
+      bool isBack = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ShortsEditorScreen(videoPath: outputVideoPath)),
       );
+      videoFile = null;
+      emit(state.copyWith(random: Random().nextDouble()));
     } else {
       for (var log in await session.getAllLogs()) {
         print("========${log.getMessage()}");
@@ -89,11 +94,10 @@ class CameraCubit extends Cubit<CameraState> {
     }
   }
 
-  Future<double> getFileSize(String filepath, int decimals) async {
+  Future<double> getFileSize({required String filepath}) async {
     var file = File(filepath);
     int bytes = await file.length();
     if (bytes <= 0) return 0;
-    // const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     var i = (log(bytes) / log(1024)).floor();
     return (bytes / pow(1024, i));
   }

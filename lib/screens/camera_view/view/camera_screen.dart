@@ -58,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen> {
                             cameraCubit.videoFile != null
                                 ? ElevatedButton(
                                     onPressed: () {
-                                      cameraCubit.nextButton(context: context);
+                                      cameraCubit.nextButton(context: context, state: state);
                                     },
                                     child: Text("Next"),
                                   )
