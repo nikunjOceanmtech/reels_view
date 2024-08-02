@@ -59,7 +59,38 @@ class CameraCubit extends Cubit<CameraState> {
     }
   }
 
+  Future<void> loadFilter() async {
+    print("==========Start -> ${DateTime.now()}");
+
+    String outputVideoPath = await setFileInDevice('filter_${DateTime.now().microsecondsSinceEpoch}.mp4');
+
+    List<String> args = [
+      "-y",
+      "-i",
+      videoFile?.path ?? "",
+      "-vf",
+      "hue=s=2",
+      outputVideoPath,
+    ];
+
+    FFmpegSession session = await FFmpegKit.executeWithArguments(args);
+
+    if ((await session.getReturnCode())?.getValue() == ReturnCode.success) {
+      print("==========Success -> ${DateTime.now()}");
+      print("==========Output -> $outputVideoPath");
+    } else {
+      for (var log in await session.getAllLogs()) {
+        print("========${log.getMessage()}");
+      }
+      session.cancel();
+    }
+  }
+
   Future<void> nextButton({required BuildContext context, required CameraLoadedState state}) async {
+    if (1 == 1) {
+      await loadFilter();
+      return;
+    }
     double size = await getFileSize(filepath: videoFile?.path ?? "");
     print("==============$size");
     if (size < 5) {

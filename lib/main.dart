@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reels_view/di/get_it.dart';
 import 'package:reels_view/screens/camera_view/view/camera_screen.dart';
+import 'package:reels_view/screens/home/view/home_screen.dart';
 import 'package:reels_view/screens/shorts_editor/view/shorts_editor_screen.dart';
 
 void main() {
@@ -30,7 +31,11 @@ class _MyAppState extends State<MyApp> {
       child: ScreenUtilInit(
         designSize: logicalWidth > 600 ? const Size(834, 1194) : const Size(414, 896),
         child: MaterialApp(
-          home: 1 == 1 ? CameraScreen() : ShortsEditorScreen(videoPath: ''),
+          home: 1 == 1
+              ? HomeScreen()
+              : 1 == 1
+                  ? CameraScreen()
+                  : ShortsEditorScreen(videoPath: ''),
         ),
       ),
     );
